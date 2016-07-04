@@ -1,0 +1,6 @@
+{
+  "name": "graphql",
+  "description": "Shore Graphql API",
+  "memory": 128,
+  "timeout": 5
+}

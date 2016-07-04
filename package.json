@@ -1,0 +1,43 @@
+{
+  "name": "shore-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Dejan Ranisavljevic",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "apex.js": "^1.1.0",
+    "aws-sdk": "^2.3.17",
+    "graphql": "^0.6.0",
+    "graphql-custom-types": "^0.4.0",
+    "graphql-relay": "^0.4.2"
+  },
+  "devDependencies": {
+    "@kawaz/apex-bin": "^0.9.0",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.9.1",
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-3": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "babel-relay-plugin": "^0.9.0",
+    "babelify": "^7.3.0",
+    "eslint": "^3.0.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.10.2",
+    "eslint-plugin-jsx-a11y": "^1.5.3",
+    "eslint-plugin-react": "^5.2.2",
+    "express": "^4.13.4",
+    "express-graphql": "^0.5.3",
+    "nodemon": "^1.9.2",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "scripts": {
+    "start": "npm run server",
+    "server": "nodemon -w server.js -w src server.js",
+    "update-schema": "babel-node ./scripts/updateSchema.js",
+    "watch-update-schema": "nodemon -w src/schema.js --exec npm run update-schema"
+  }
+}

@@ -1,0 +1,1 @@
+# Shore graphql server
