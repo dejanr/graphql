@@ -4,19 +4,19 @@ module.exports = {
   output: {
     path: './',
     filename: 'main.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
   },
   module: {
     loaders: [
       {
         test: /\.js$/,
         loader: 'babel',
-        exclude: [/node_modules/]
+        exclude: [/node_modules/],
       },
       {
         test: /\.json$/,
-        loader: 'json-loader'
-      }
-    ]
-  }
-}
+        loader: 'json-loader',
+      },
+    ],
+  },
+};

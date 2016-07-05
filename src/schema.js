@@ -1,72 +1,135 @@
 import {
   GraphQLBoolean,
-  GraphQLFloat,
   GraphQLID,
   GraphQLInt,
   GraphQLList,
-  GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
 } from 'graphql';
 
-import {
-  connectionArgs,
-  connectionDefinitions,
-  connectionFromArray,
-  fromGlobalId,
-  globalIdField,
-  mutationWithClientMutationId,
-  nodeDefinitions,
-} from 'graphql-relay';
-
-import {
-  User,
-  getUser,
-  getViewer,
-} from './domain/user';
-
-/**
- * Define the way we resolve an ID to its object.
- * Define the way we resolve an object to its GraphQL type.
- */
-const {nodeInterface, nodeField} = nodeDefinitions(
-  (globalId) => {
-    const {type, id} = fromGlobalId(globalId);
-
-    if (type === 'User') {
-      return getUser(id);
-    } else {
-      return null;
-    }
-  },
-  (obj) => {
-    if (obj instanceof User) {
-      return UserType;
-
-    } else {
-      return null;
-    }
-  }
-);
+import appointments from './domain/appointments';
+import setup from './domain/setup';
 
 /**
  * Domain Types
  */
-const UserType = new GraphQLObjectType({
-  name: 'User',
-  description: 'A person who uses our app',
+const AppointmentType = new GraphQLObjectType({
+  name: 'Appointment',
+  description: 'Merchant appointment',
   fields: () => ({
-    id: globalIdField('User'),
+    id: { type: GraphQLString },
+    event_type: { type: GraphQLString },
+    color: { type: GraphQLString },
+    start: { type: GraphQLString },
+    end: { type: GraphQLString },
+    duration: {
+      type: GraphQLInt,
+    },
+    steps: {
+      type: new GraphQLList(StepType),
+    },
+    resources: {
+      type: new GraphQLList(ResourceType),
+      resolve: (source) =>
+        setup.resources.filter(
+          resource => source.resource_ids.find(id => id === resource.id)
+        ),
+    },
   }),
-  interfaces: [nodeInterface],
 });
 
-/**
- * Domain Connections
- */
-const {connectionType: userConnection} =
-  connectionDefinitions({name: 'User', nodeType: UserType});
+const StepType = new GraphQLObjectType({
+  name: 'Step',
+  description: 'Service step',
+  fields: () => ({
+    type: { type: GraphQLString },
+    duration: { type: GraphQLInt },
+    name: { type: GraphQLString },
+    resource: {
+      type: ResourceType,
+    },
+  }),
+});
+
+const ResourceType = new GraphQLObjectType({
+  name: 'Resource',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    services: {
+      type: new GraphQLList(ServiceType),
+      args: {
+        offset: {
+          type: GraphQLInt,
+          description: 'Offset the appointments returing',
+        },
+        limit: {
+          type: GraphQLInt,
+          description: 'Limit the appointments returing',
+        },
+      },
+      resolve: (source, { offset, limit } = {}) => {
+        const data = setup.services.filter(
+          service => source.service_ids.find(id => id === service.id)
+        );
+
+        if (offset > 0) {
+          return data.slice(
+            offset,
+            offset + (limit || data.length)
+          );
+        }
+
+        return data;
+      },
+    },
+  }),
+});
+
+const ServiceType = new GraphQLObjectType({
+  name: 'Service',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    position: { type: GraphQLInt },
+    is_combinable: { type: GraphQLBoolean },
+    resources: {
+      type: new GraphQLList(ResourceType),
+      resolve: (source) =>
+        setup.resources.filter(
+          resource => source.resource_ids.find(id => id === resource.id)
+        ),
+    },
+    price: { type: GraphQLInt },
+    price_currency: { type: GraphQLString },
+    price_cents: { type: GraphQLInt },
+    category: {
+      type: ServiceCategoryType,
+      resolve: (source) =>
+        setup.service_categories.find(
+          category => category.id === source.service_category_id
+        ),
+    },
+  }),
+});
+
+const ServiceCategoryType = new GraphQLObjectType({
+  name: 'ServiceCategory',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+  }),
+});
+
+const UserType = new GraphQLObjectType({
+  name: 'User',
+  fields: () => ({
+    id: { type: GraphQLString },
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
+  }),
+});
 
 /**
  * Query
@@ -74,11 +137,62 @@ const {connectionType: userConnection} =
 const Query = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    node: nodeField,
-
     whoami: {
       type: UserType,
-      resolve: () => getViewer(),
+      resolve: (source, args, context) => context.user,
+    },
+
+    appointment: {
+      type: AppointmentType,
+      description: 'Merchant appointments',
+      args: {
+        id: { type: GraphQLID },
+      },
+      resolve: (source, { id } = {}) => {
+        if (!id) {
+          return null;
+        }
+
+        return appointments.appointments.find(appointment => appointment.id === id);
+      },
+
+    },
+
+    appointments: {
+      type: new GraphQLList(AppointmentType),
+      description: 'Merchant appointments',
+      args: {
+        offset: {
+          type: GraphQLInt,
+          description: 'Offset the appointments returing',
+        },
+        limit: {
+          type: GraphQLInt,
+          description: 'Limit the appointments returing',
+        },
+      },
+      resolve: (source, { offset, limit } = {}) => {
+        if (offset > 0) {
+          return appointments.appointments.slice(
+            offset,
+            offset + (limit || appointments.appointments.length)
+          );
+        }
+
+        return appointments.appointments;
+      },
+    },
+
+    services: {
+      type: new GraphQLList(ServiceType),
+      description: 'Merchant services',
+      resolve: () => setup.services,
+    },
+
+    resources: {
+      type: new GraphQLList(ServiceType),
+      description: 'Merchant resources',
+      resolve: () => setup.resources,
     },
   }),
 });
@@ -86,17 +200,17 @@ const Query = new GraphQLObjectType({
 /**
  * Mutation Types
  */
-const mutationType = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: () => ({
-    // todo: Add mutations
-  })
-});
+// const mutationType = new GraphQLObjectType({
+//   name: 'Mutation',
+//   fields: () => ({
+//     // todo: Add mutations
+//   }),
+// });
 
 const Schema = new GraphQLSchema({
   query: Query,
   // todo: Uncomment the following after adding some mutation fields:
-  // mutation: mutationType
+  // mutation: mutationType,
 });
 
 export default Schema;

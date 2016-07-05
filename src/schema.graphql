@@ -2,15 +2,57 @@ schema {
   query: Query
 }
 
-interface Node {
-  id: ID!
+type Appointment {
+  id: String
+  event_type: String
+  color: String
+  start: String
+  end: String
+  duration: Int
+  steps: [Step]
+  resources: [Resource]
 }
 
 type Query {
-  node(id: ID!): Node
   whoami: User
+  appointment(id: ID): Appointment
+  appointments(offset: Int, limit: Int): [Appointment]
+  services: [Service]
+  resources: [Service]
 }
 
-type User implements Node {
-  id: ID!
+type Resource {
+  id: ID
+  name: String
+  services(offset: Int, limit: Int): [Service]
+}
+
+type Service {
+  id: ID
+  name: String
+  position: Int
+  is_combinable: Boolean
+  resources: [Resource]
+  price: Int
+  price_currency: String
+  price_cents: Int
+  category: ServiceCategory
+}
+
+type ServiceCategory {
+  id: ID
+  name: String
+}
+
+type Step {
+  type: String
+  duration: Int
+  name: String
+  resource: Resource
+}
+
+type User {
+  id: String
+  firstName: String
+  lastName: String
 }
