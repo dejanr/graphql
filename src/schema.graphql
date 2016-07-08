@@ -17,8 +17,9 @@ type Query {
   whoami: User
   appointment(id: ID): Appointment
   appointments(offset: Int, limit: Int): [Appointment]
+  latestAppointment: Appointment
   services: [Service]
-  resources: [Service]
+  resources: [Resource]
 }
 
 type Resource {

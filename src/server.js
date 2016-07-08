@@ -2,10 +2,22 @@ import express from 'express';
 import graphQLHTTP from 'express-graphql';
 import Schema from './schema';
 
-const GRAPHQL_PORT = process.env.PORT || 3000;
+const GRAPHQL_PORT = process.env.PORT || 4000;
 
 // Expose a GraphQL endpoint
 const graphQLServer = express();
+
+graphQLServer.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
+graphQLServer.options('*', (req, res) => {
+  res.status(200).end();
+});
 
 // moch session middleware
 graphQLServer.use((req, resp, next) => {

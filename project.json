@@ -1,15 +1,11 @@
 {
-  "name": "shore-graphql",
-  "description": "Shore graphql server",
+  "name": "demo",
+  "description": "graphql api demo",
   "memory": 128,
   "timeout": 5,
   "role": "arn:aws:iam::503215484896:role/lamda",
   "defaultEnvironment": "dev",
   "environment": {},
   "runtime": "nodejs",
-  "handler": "main.default",
-  "hooks": {
-    "build": "../../node_modules/.bin/webpack --config ../../lamda.webpack.config.js",
-    "clean": "rm -f main.js"
-  }
+  "handler": "main.default"
 }

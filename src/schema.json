@@ -85,6 +85,18 @@
               "deprecationReason": null
             },
             {
+              "name": "latestAppointment",
+              "description": "Last created appointment",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Appointment",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "services",
               "description": "Merchant services",
               "args": [],
@@ -109,7 +121,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "Service",
+                  "name": "Resource",
                   "ofType": null
                 }
               },

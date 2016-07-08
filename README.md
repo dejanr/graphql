@@ -1,4 +1,4 @@
-# Shore graphql server
+# graphql api
 
 Examples:
 

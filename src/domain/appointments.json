@@ -32,7 +32,6 @@
         "1168bef1-43ce-45a4-ad84-7a20acd5fbe9"
       ],
       "event_type": "appointment",
-      "hover_url": "https://edge.shore.com/merchant/appointments/8bab9629-4452-4355-81f5-8917820ab78d/hover?occurrence_id=ab68df0b-6979-477b-a17b-928ef3de0737",
       "created_by_merchant": true
     },
     {
@@ -67,7 +66,40 @@
         "1168bef1-43ce-45a4-ad84-7a20acd5fbe9"
       ],
       "event_type": "appointment",
-      "hover_url": "https://edge.shore.com/merchant/appointments/25f139cb-3d51-4128-b39c-d468730442ac/hover?occurrence_id=76ace1e4-58ff-48c9-93e6-34e9cd88b275",
+      "created_by_merchant": true
+    },
+    {
+      "id": "25f139cb-3d51-4128-b39c-d46873044210",
+      "steps": [
+        {
+          "type": "work",
+          "duration": 5,
+          "name": "Preparation",
+          "resource_ids": [
+            "1168bef1-43ce-45a4-ad84-7a20acd5fb10"
+          ]
+        },
+        {
+          "type": "work",
+          "duration": 60,
+          "name": "Haircut",
+          "resource_ids": []
+        }
+      ],
+      "occurrence_id": "76ace1e4-58ff-48c9-93e6-34e9cd88b275",
+      "duration": 3900,
+      "start": "2016/07/06 16:00",
+      "end": "2016/07/06 17:05",
+      "unread_event_messages_count": 0,
+      "title": "<div class=\"primary priority1\">John Doe</div>\n<div class=\"secondary priority2\">Hello</div>\n<div class=\"tertiary priority3\">15:30-16:35</div>",
+      "type": "wc-appointment-by-service",
+      "state_type": "wc-appointment-by-service",
+      "color": "#bdd7a5",
+      "action_required": false,
+      "resource_ids": [
+        "1168bef1-43ce-45a4-ad84-7a20acd5fb10"
+      ],
+      "event_type": "appointment",
       "created_by_merchant": true
     }
   ],

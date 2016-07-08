@@ -1,18 +1,17 @@
 {
-  "name": "shore-graphql",
+  "private": true,
+  "name": "graphql-api",
   "version": "1.0.0",
   "description": "",
   "author": "Dejan Ranisavljevic",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@shore/shore-client": "^0.22.0",
     "apex.js": "^1.1.0",
     "aws-sdk": "^2.3.17",
     "graphql": "^0.6.0",
     "graphql-custom-types": "^0.4.0",
-    "graphql-relay": "^0.4.2",
-    "isomorphic-fetch": "^2.2.1"
+    "json-loader": "^0.5.4"
   },
   "devDependencies": {
     "@kawaz/apex-bin": "^0.9.0",

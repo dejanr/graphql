@@ -12,8 +12,17 @@
     },
     {
       "id": "1168bef1-43ce-45a4-ad84-7a20acd5fbe9",
-      "name": "Barber",
+      "name": "Agatha Richter",
       "position": 2,
+      "color": "",
+      "service_ids": [
+        "0e399644-9538-4617-90fe-3e425c6e585d"
+      ]
+    },
+    {
+      "id": "1168bef1-43ce-45a4-ad84-7a20acd5fb10",
+      "name": "Vanesa Muller",
+      "position": 3,
       "color": "",
       "service_ids": [
         "0e399644-9538-4617-90fe-3e425c6e585d"
@@ -28,7 +37,8 @@
       "is_combinable": true,
       "resource_ids": [
         "1e0a21c3-8dc2-44da-9488-f9db46c08298",
-        "1168bef1-43ce-45a4-ad84-7a20acd5fbe9"
+        "1168bef1-43ce-45a4-ad84-7a20acd5fbe9",
+        "1168bef1-43ce-45a4-ad84-7a20acd5fb10"
       ],
       "duration": 60,
       "steps": [

@@ -74,6 +74,10 @@ const ResourceType = new GraphQLObjectType({
           service => source.service_ids.find(id => id === service.id)
         );
 
+        if (!offset && limit > 0) {
+          return data.slice(0, limit);
+        }
+
         if (offset > 0) {
           return data.slice(
             offset,
@@ -172,6 +176,10 @@ const Query = new GraphQLObjectType({
         },
       },
       resolve: (source, { offset, limit } = {}) => {
+        if (!offset && limit > 0) {
+          return appointments.appointments.slice(0, limit);
+        }
+
         if (offset > 0) {
           return appointments.appointments.slice(
             offset,
@@ -183,6 +191,12 @@ const Query = new GraphQLObjectType({
       },
     },
 
+    latestAppointment: {
+      type: AppointmentType,
+      description: 'Last created appointment',
+      resolve: () => appointments.appointments[appointments.appointments.length - 1],
+    },
+
     services: {
       type: new GraphQLList(ServiceType),
       description: 'Merchant services',
@@ -190,7 +204,7 @@ const Query = new GraphQLObjectType({
     },
 
     resources: {
-      type: new GraphQLList(ServiceType),
+      type: new GraphQLList(ResourceType),
       description: 'Merchant resources',
       resolve: () => setup.resources,
     },
