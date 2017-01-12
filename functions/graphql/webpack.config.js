@@ -13,10 +13,6 @@ module.exports = {
         loader: 'babel',
         exclude: [/node_modules/],
       },
-      {
-        test: /\.json/,
-        loader: 'json',
-      },
     ],
   },
 };

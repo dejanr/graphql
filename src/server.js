@@ -4,7 +4,6 @@ import Schema from './schema';
 
 const GRAPHQL_PORT = process.env.PORT || 4000;
 
-// Expose a GraphQL endpoint
 const graphQLServer = express();
 
 graphQLServer.use((req, res, next) => {
@@ -21,15 +20,12 @@ graphQLServer.options('*', (req, res) => {
 
 // moch session middleware
 graphQLServer.use((req, resp, next) => {
+  /* eslint no-param-reassign:0 */
   req.session = {
     user: {
       id: '123',
       firstName: 'John',
       lastName: 'Doe',
-    },
-    merchant: {
-      id: '3b8ff49e-7a83-4172-9e5d-f5c16eb10ea0',
-      name: 'Hair Studio',
     },
   };
   next();
@@ -42,6 +38,7 @@ graphQLServer.use('/', graphQLHTTP(request => ({
   context: request.session,
 })));
 
+/* eslint no-console:0 */
 graphQLServer.listen(GRAPHQL_PORT, () => console.log(
-  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}`
+  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}`,
 ));

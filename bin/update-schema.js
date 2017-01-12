@@ -2,8 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { graphql } from 'graphql';
-import { introspectionQuery, printSchema } from 'graphql/utilities';
+import { printSchema } from 'graphql/utilities';
 import Schema from '../src/schema';
 
 // Save user readable type system shorthand of schema
